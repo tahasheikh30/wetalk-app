@@ -1,5 +1,5 @@
 .chatbox {
-  height: 75vh;
+  height: 100vh;
   position: relative;
   background-color: #f1f5ff;
 }
@@ -95,7 +95,7 @@
     color: white;
     padding: 8px;
     max-width: 200px;
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 300;
     border-radius: 8px 8px 0px 8px;
     margin-bottom: 30px;
