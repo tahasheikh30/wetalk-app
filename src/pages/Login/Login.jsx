@@ -1,20 +1,46 @@
 import React, { useState } from "react";
 import "./Login.css";
 import assets from "../../assets/assets.js";
+import { signup, login } from "../../config/Firebase.js";
 
 function Login() {
   const [currentState, setCurrentState] = useState("Sign up");
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const onSubmitHandler = (event) => {
+    event.preventDefault();
+    if (currentState === "Sign up") {
+      signup(name, username, email, password);
+    } else {
+      login(email, password);
+    }
+  };
 
   return (
     <div className="login">
       <img className="logo" src={assets.logo_big} alt="" />
-      <form className="login-form">
+      <form onSubmit={onSubmitHandler} className="login-form">
         <h2>{currentState}</h2>
         {currentState === "Sign up" ? (
           <input
             type="text"
             placeholder="Full name"
             className="form-input"
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+            required
+          />
+        ) : null}
+        {currentState === "Sign up" ? (
+          <input
+            type="text"
+            placeholder="Username"
+            className="form-input"
+            onChange={(e) => setUsername(e.target.value)}
+            value={username}
             required
           />
         ) : null}
@@ -22,12 +48,16 @@ function Login() {
           type="email"
           placeholder="Enter your email"
           className="form-input"
+          onChange={(e) => setEmail(e.target.value)}
+          value={email}
           required
         />
         <input
           type="password"
           placeholder="Enter your password"
           className="form-input"
+          onChange={(e) => setPassword(e.target.value)}
+          value={password}
           required
         />
         <button type="submit">
@@ -52,7 +82,7 @@ function Login() {
             </p>
           ) : (
             <p className="login-toggle">
-              Create an account{" "}
+              Create an account?{" "}
               <span onClick={() => setCurrentState("Sign up")}>Click Here</span>{" "}
             </p>
           )}

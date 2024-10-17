@@ -1,6 +1,7 @@
 import React from 'react'
 import "./RightSidebar.css"
 import assets from "../../assets/assets.js"
+import { logout } from '../../config/Firebase.js'
 
 function RightSidebar() {
   return (
@@ -8,7 +9,7 @@ function RightSidebar() {
       <div className="rs-profile">
         <img src={assets.profile_img} alt="" />
         <h3>Elijah Mikaelson <img src={assets.green_dot} className='dot' alt="" /></h3>
-        <p>Hey there, I am using wetalk </p>
+        <p>Hey there, I am using WeTalk </p>
       </div>
       <hr />
       <div className="rs-media">
@@ -22,7 +23,7 @@ function RightSidebar() {
           <img src={assets.pic2} alt="" />
         </div>
       </div>
-      <button>Logout</button>
+      <button onClick={()=>logout()}>Logout</button>
     </div>
   )
 }
