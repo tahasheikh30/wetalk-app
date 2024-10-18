@@ -7,6 +7,7 @@ import {
 } from "firebase/auth";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 import { toast } from "react-toastify";
+import assets from "../assets/assets";
 
 const firebaseConfig = {
   apiKey: "AIzaSyC6FvltdNfWw4AqQwLynLdRq9mg706dEDo",
@@ -31,7 +32,7 @@ const signup = async (name, username, email, password) => {
       name,
       username: username.toLowerCase(),
       email,
-      avatar: "",
+      avatar: assets.avatar_icon,
       bio: "Hello Everyone, I am using WeTalk",
       lastSeen: Date.now(),
     });
