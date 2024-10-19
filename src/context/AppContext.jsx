@@ -38,20 +38,33 @@ const AppContextProvider = (props) => {
   useEffect(() => {
     if (userData) {
       const chatRef = doc(db, "chats", userData.id);
-      const unSub = onSnapshot(chatRef, async (res)=>{
-          const chatItems = res.data().chatsData;
-          const tempData = [];
-          for(const item of chatItems){
-            const userRef = doc(db, "users",item.rId);
+
+      // Subscribe to the chat data in real-time
+      const unSub = onSnapshot(chatRef, async (res) => {
+        const chatItems = res.data().chatsData;
+        const tempData = [];
+        const chatIds = new Set();  // Track unique chat IDs to avoid duplicates
+
+        // Fetch chat data for each item in the chat list
+        for (const item of chatItems) {
+          // Only add if the chat is not already in the set
+          if (!chatIds.has(item.messageId)) {
+            const userRef = doc(db, "users", item.rId);
             const userSnap = await getDoc(userRef);
             const userData = userSnap.data();
-            tempData.push({...item,userData});
+            
+            tempData.push({ ...item, userData });
+            chatIds.add(item.messageId);  // Mark this chat as processed
           }
-          setChatData(tempData.sort((a,b)=>b.updatedAt - a.updatedAt));
-      })
+        }
+
+        // Sort by `updatedAt` and set the chat data
+        setChatData(tempData.sort((a, b) => b.updatedAt - a.updatedAt));
+      });
+
       return () => {
         unSub();
-      }
+      };
     }
   }, [userData]);
 
@@ -64,7 +77,9 @@ const AppContextProvider = (props) => {
   };
 
   return (
-    <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
+    <AppContext.Provider value={value}>
+      {props.children}
+    </AppContext.Provider>
   );
 };
 
