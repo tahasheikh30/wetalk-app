@@ -18,6 +18,7 @@ function Chatbox() {
     useContext(AppContext);
 
   const [input, setInput] = useState("");
+  const [selectedImage, setSelectedImage] = useState(null);
 
   const sendMessage = async () => {
     try {
@@ -116,6 +117,14 @@ function Chatbox() {
     }
   };
 
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+  };
+  
+  const closeModal = () => {
+    setSelectedImage(null);
+  };
+
   useEffect(() => {
     if (messagesId) {
       const unSub = onSnapshot(doc(db, "messages", messagesId), (res) => {
@@ -145,9 +154,7 @@ function Chatbox() {
             className={message.sId === userData.id ? "s-msg" : "r-msg"}
           >
             {message["image"] ? (
-              <a href={message.image} target="_blank" rel="noopener noreferrer">
-                <img className="message-image" src={message.image} alt="" />
-              </a>
+                <img className="message-image" src={message.image} alt="" onClick={() => handleImageClick(message.image)} />
             ) : (
               <p className="message">{message.text}</p>
             )}
@@ -187,6 +194,12 @@ function Chatbox() {
         </label>
         <img onClick={sendMessage} src={assets.send_button} alt="" />
       </div>
+      {selectedImage && (
+      <div className="modal" onClick={closeModal}>
+        <span className="close">&times;</span>
+        <img className="modal-content" src={selectedImage} alt="" />
+      </div>
+    )}
     </div>
   ) : (
     <div className="chat-welcome">
