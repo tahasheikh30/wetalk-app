@@ -9,7 +9,7 @@ import { toast } from "react-toastify";  // Assuming you're using a toast librar
 
 function LeftSidebar() {
   const navigate = useNavigate();
-  const { userData, chatData } = useContext(AppContext);
+  const { userData, chatData, chatUser, setChatUser, setMessagesId, messageId } = useContext(AppContext);
   const [user, setUser] = useState(null);
   const [showSearch, setShowSearch] = useState(false);
   const [loading, setLoading] = useState(false);  // New state for loading
@@ -101,6 +101,11 @@ function LeftSidebar() {
     }
   };
 
+  const setChat = async (item) => {
+    setMessagesId(item.messageId);
+    setChatUser(item)
+  }
+
   return (
     <div className="ls">
       <div className="ls-top">
@@ -129,7 +134,7 @@ function LeftSidebar() {
          : 
          Array.isArray(chatData) && chatData.length > 0 ? (
           chatData.map((item, index) => (
-            <div key={index} className="friends">
+            <div onClick={()=>setChat(item)} key={index} className="friends">
               <img src={item.userData.avatar} alt="" />
               <div>
                 <p>{item.userData.name}</p>
