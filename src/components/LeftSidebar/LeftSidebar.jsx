@@ -2,17 +2,35 @@ import React, { useContext, useState } from "react";
 import "./LeftSidebar.css";
 import assets from "../../assets/assets.js";
 import { useNavigate } from "react-router-dom";
-import { arrayUnion, collection, doc, getDocs, query, serverTimestamp, setDoc, updateDoc, where } from "firebase/firestore";
+import {
+  arrayUnion,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  query,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+  where,
+} from "firebase/firestore";
 import { db } from "../../config/Firebase.js";
 import { AppContext } from "../../context/AppContext.jsx";
-import { toast } from "react-toastify";  // Assuming you're using a toast library for notifications
+import { toast } from "react-toastify"; // Assuming you're using a toast library for notifications
 
 function LeftSidebar() {
   const navigate = useNavigate();
-  const { userData, chatData, chatUser, setChatUser, setMessagesId, messageId } = useContext(AppContext);
+  const {
+    userData,
+    chatData,
+    chatUser,
+    setChatUser,
+    setMessagesId,
+    messagesId,
+  } = useContext(AppContext);
   const [user, setUser] = useState(null);
   const [showSearch, setShowSearch] = useState(false);
-  const [loading, setLoading] = useState(false);  // New state for loading
+  const [loading, setLoading] = useState(false); // New state for loading
 
   const inputHandler = async (e) => {
     try {
@@ -47,7 +65,7 @@ function LeftSidebar() {
   };
 
   const addChat = async () => {
-    if (loading) return;  // Prevent multiple clicks
+    if (loading) return; // Prevent multiple clicks
 
     setLoading(true);
     const messagesRef = collection(db, "messages");
@@ -97,14 +115,29 @@ function LeftSidebar() {
     } catch (error) {
       toast.error(error.message || "Failed to add chat");
     } finally {
-      setLoading(false);  // Re-enable the button after request
+      setLoading(false); // Re-enable the button after request
     }
   };
 
   const setChat = async (item) => {
-    setMessagesId(item.messageId);
-    setChatUser(item)
-  }
+    try {
+      setMessagesId(item.messageId);
+      setChatUser(item);
+      const userChatsRef = doc(db, "chats", userData.id);
+      const userChatsSnapshot = await getDoc(userChatsRef);
+      const userChatsData = userChatsSnapshot.data();
+      const chatIndex = userChatsData.chatsData.findIndex(
+        (c) => c.messageId === item.messageId
+      );
+      userChatsData.chatsData[chatIndex].messageSeen = true;
+      await updateDoc(userChatsRef, {
+        chatsData: userChatsData.chatsData,
+      });
+    } catch (error) {
+      toast.error(error.message)
+      console.error(error);
+    }
+  };
 
   return (
     <div className="ls">
@@ -126,15 +159,22 @@ function LeftSidebar() {
         </div>
       </div>
       <div className="ls-list">
-        {showSearch && user ? 
+        {showSearch && user ? (
           <div onClick={addChat} className="friends add-user">
             <img src={user.avatar} alt="" />
             <p>{user.name}</p>
           </div>
-         : 
-         Array.isArray(chatData) && chatData.length > 0 ? (
+        ) : Array.isArray(chatData) && chatData.length > 0 ? (
           chatData.map((item, index) => (
-            <div onClick={()=>setChat(item)} key={index} className="friends">
+            <div
+              onClick={() => setChat(item)}
+              key={index}
+              className={`friends ${
+                item.messageSeen || item.messageId === messagesId
+                  ? ""
+                  : "border"
+              }`}
+            >
               <img src={item.userData.avatar} alt="" />
               <div>
                 <p>{item.userData.name}</p>
@@ -144,7 +184,7 @@ function LeftSidebar() {
           ))
         ) : (
           <p className="no-chats">No chats available</p>
-        )} 
+        )}
       </div>
     </div>
   );
