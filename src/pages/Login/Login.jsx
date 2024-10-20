@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./Login.css";
 import assets from "../../assets/assets.js";
-import { signup, login } from "../../config/Firebase.js";
+import { signup, login, resetPassword } from "../../config/Firebase.js";
 
 function Login() {
   const [currentState, setCurrentState] = useState("Sign up");
@@ -75,6 +75,9 @@ function Login() {
         ) : null}
 
         <div className="login-forgot">
+        {currentState === "Login" ? (
+            <p className="forgot-password" onClick={() => resetPassword(email)}>Forgot Password</p>
+          ) : null}
           {currentState === "Sign up" ? (
             <p className="login-toggle">
               Already have an account?{" "}
