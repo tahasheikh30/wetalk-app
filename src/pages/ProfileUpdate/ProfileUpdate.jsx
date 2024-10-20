@@ -99,7 +99,7 @@ function ProfileUpdate() {
             required
           />
           <textarea
-            onChange={(e) => setBio(e.target.bio)}
+            onChange={(e) => setBio(e.target.value)}
             value={bio}
             placeholder="Enter profile bio"
             required

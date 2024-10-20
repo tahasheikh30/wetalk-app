@@ -16,7 +16,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../../config/Firebase.js";
 import { AppContext } from "../../context/AppContext.jsx";
-import { toast } from "react-toastify"; // Assuming you're using a toast library for notifications
+import { toast } from "react-toastify"; 
+import { logout } from '../../config/Firebase.js'
 
 function LeftSidebar() {
   const navigate = useNavigate();
@@ -149,7 +150,7 @@ function LeftSidebar() {
             <div className="sub-menu">
               <p onClick={() => navigate("/profile")}>Edit Profile</p>
               <hr />
-              <p>Logout</p>
+              <p onClick={()=>logout()}>Logout</p>
             </div>
           </div>
         </div>
