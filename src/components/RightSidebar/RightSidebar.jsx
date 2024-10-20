@@ -33,8 +33,20 @@ function RightSidebar() {
         <img src={chatUser.userData.avatar} alt="" />
         <h3>
           {chatUser.userData.name}{" "}
-          <img src={assets.green_dot} className="dot" alt="" />
+          {Date.now() - chatUser.userData.lastSeen <= 50000 ? (
+            <img className="dot" src={assets.green_dot} alt="online" />
+          ) : null}
         </h3>
+        <p>
+          {Date.now() - chatUser.userData.lastSeen <= 70000 ? (
+            "Online"
+          ) : (
+            <span>
+              Last seen:{" "}
+              {new Date(chatUser.userData.lastSeen).toLocaleTimeString()}
+            </span>
+          )}
+        </p>
         <p>{chatUser.userData.bio}</p>
       </div>
       <hr />

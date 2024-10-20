@@ -10,9 +10,9 @@ const AppContextProvider = (props) => {
 
   const [userData, setUserData] = useState(null);
   const [chatData, setChatData] = useState(null);
-  const [messagesId,setMessagesId] = useState(null);
-  const [messages,setMessages] = useState([]);
-  const [chatUser,setChatUser] = useState(null);
+  const [messagesId, setMessagesId] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [chatUser, setChatUser] = useState(null);
 
   const loadUserData = async (uid) => {
     try {
@@ -28,13 +28,16 @@ const AppContextProvider = (props) => {
       await updateDoc(userRef, {
         lastSeen: Date.now(),
       });
-      setInterval(async () => {
-        if (auth.chatUser) {
+      const intervalId = setInterval(async () => {
+        if (auth.currentUser) {
           await updateDoc(userRef, {
             lastSeen: Date.now(),
           });
         }
-      }, 60000);
+      }, 30000);
+      return () => {
+        clearInterval(intervalId);
+      };
     } catch (error) {}
   };
 
@@ -46,7 +49,7 @@ const AppContextProvider = (props) => {
       const unSub = onSnapshot(chatRef, async (res) => {
         const chatItems = res.data().chatsData;
         const tempData = [];
-        const chatIds = new Set();  // Track unique chat IDs to avoid duplicates
+        const chatIds = new Set(); // Track unique chat IDs to avoid duplicates
 
         // Fetch chat data for each item in the chat list
         for (const item of chatItems) {
@@ -55,9 +58,9 @@ const AppContextProvider = (props) => {
             const userRef = doc(db, "users", item.rId);
             const userSnap = await getDoc(userRef);
             const userData = userSnap.data();
-            
+
             tempData.push({ ...item, userData });
-            chatIds.add(item.messageId);  // Mark this chat as processed
+            chatIds.add(item.messageId); // Mark this chat as processed
           }
         }
 
@@ -71,6 +74,28 @@ const AppContextProvider = (props) => {
     }
   }, [userData]);
 
+  useEffect(() => {
+    if (chatUser && chatUser.userData && chatUser.userData.id) {
+      const chatUserRef = doc(db, "users", chatUser.userData.id);
+
+      // Set up a real-time listener for the chatUser's document in Firestore
+      const unsubscribe = onSnapshot(chatUserRef, (docSnap) => {
+        if (docSnap.exists()) {
+          const updatedUserData = docSnap.data();
+          setChatUser((prev) => ({
+            ...prev,
+            userData: { ...prev.userData, lastSeen: updatedUserData.lastSeen },
+          }));
+        }
+      });
+
+      // Clean up the listener when chatUser changes or component unmounts
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [chatUser]);
+
   const value = {
     userData,
     setUserData,
@@ -82,13 +107,11 @@ const AppContextProvider = (props) => {
     messagesId,
     setMessagesId,
     chatUser,
-    setChatUser
+    setChatUser,
   };
 
   return (
-    <AppContext.Provider value={value}>
-      {props.children}
-    </AppContext.Provider>
+    <AppContext.Provider value={value}>{props.children}</AppContext.Provider>
   );
 };
 

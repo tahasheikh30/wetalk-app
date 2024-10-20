@@ -14,8 +14,13 @@ import { toast } from "react-toastify";
 import upload from "../../library/Upload.js";
 
 function Chatbox() {
-  const { userData, messagesId, chatUser, messages, setMessages } =
-    useContext(AppContext);
+  const {
+    userData,
+    messagesId,
+    chatUser,
+    messages,
+    setMessages,
+  } = useContext(AppContext);
 
   const [input, setInput] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
@@ -120,7 +125,7 @@ function Chatbox() {
   const handleImageClick = (imageUrl) => {
     setSelectedImage(imageUrl);
   };
-  
+
   const closeModal = () => {
     setSelectedImage(null);
   };
@@ -142,7 +147,9 @@ function Chatbox() {
         <img src={chatUser.userData.avatar} alt="" />
         <p>
           {chatUser.userData.name}{" "}
-          <img className="dot" src={assets.green_dot} alt="" />
+          {Date.now() - chatUser.userData.lastSeen <= 50000 ? (
+            <img className="dot" src={assets.green_dot} alt="" />
+          ) : null}
         </p>
         <img src={assets.help_icon} className="help" alt="" />
       </div>
@@ -154,7 +161,12 @@ function Chatbox() {
             className={message.sId === userData.id ? "s-msg" : "r-msg"}
           >
             {message["image"] ? (
-                <img className="message-image" src={message.image} alt="" onClick={() => handleImageClick(message.image)} />
+              <img
+                className="message-image"
+                src={message.image}
+                alt=""
+                onClick={() => handleImageClick(message.image)}
+              />
             ) : (
               <p className="message">{message.text}</p>
             )}
@@ -195,11 +207,11 @@ function Chatbox() {
         <img onClick={sendMessage} src={assets.send_button} alt="" />
       </div>
       {selectedImage && (
-      <div className="modal" onClick={closeModal}>
-        <span className="close">&times;</span>
-        <img className="modal-content" src={selectedImage} alt="" />
-      </div>
-    )}
+        <div className="modal" onClick={closeModal}>
+          <span className="close">&times;</span>
+          <img className="modal-content" src={selectedImage} alt="" />
+        </div>
+      )}
     </div>
   ) : (
     <div className="chat-welcome">
