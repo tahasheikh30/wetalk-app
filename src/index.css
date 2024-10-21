@@ -32,3 +32,9 @@ img.dot{
     opacity: 1;
     }
 }
+
+@media (max-width:900px) {
+  .hidden{
+    display: none;
+  }
+}

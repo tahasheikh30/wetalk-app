@@ -138,3 +138,9 @@
   color: white;
   font-weight: 600;
 }
+
+@media (max-width:900px) {
+  .ls{
+    width: 100%;
+  }
+}

@@ -173,3 +173,20 @@
   cursor: pointer;
   color: #808080;
 }
+
+.chat-user .arrow{
+  display: none;
+}
+
+@media (max-width:900px) {
+  .chatbox{
+    width: 100%;
+    justify-content: center;
+  }
+  .chat-user .arrow{
+    display: block;
+  }
+  .chat-user .help{
+    display: none;
+  }
+}

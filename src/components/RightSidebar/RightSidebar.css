@@ -60,7 +60,7 @@
     cursor: pointer;
 }
 
-.rs button{
+.rs button {
     position: absolute;
     bottom: 20px;
     left: 50%;
@@ -73,7 +73,15 @@
     padding: 10px 65px;
     border-radius: 20px;
     cursor: pointer;
-}
+    transition: box-shadow 0.2s ease-in-out, background-color 0.2s ease-in-out;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1); 
+  }
+  
+  .rs button:active {
+    background-color: #045bb8;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); 
+  }
+  
 
 .modal {
     position: fixed;
@@ -107,4 +115,10 @@
     font-size: 24px;
     cursor: pointer;
     color: #808080;
+  }
+
+  @media (max-width:900px) {
+    .rs{
+        display: none;
+    }
   }

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./LeftSidebar.css";
 import assets from "../../assets/assets.js";
 import { useNavigate } from "react-router-dom";
@@ -16,8 +16,8 @@ import {
 } from "firebase/firestore";
 import { db } from "../../config/Firebase.js";
 import { AppContext } from "../../context/AppContext.jsx";
-import { toast } from "react-toastify"; 
-import { logout } from '../../config/Firebase.js'
+import { toast } from "react-toastify";
+import { logout } from "../../config/Firebase.js";
 
 function LeftSidebar() {
   const navigate = useNavigate();
@@ -28,6 +28,8 @@ function LeftSidebar() {
     setChatUser,
     setMessagesId,
     messagesId,
+    chatVisible,
+    setChatVisible,
   } = useContext(AppContext);
   const [user, setUser] = useState(null);
   const [showSearch, setShowSearch] = useState(false);
@@ -112,6 +114,23 @@ function LeftSidebar() {
         }),
       });
 
+      //Added later
+      // const uSnap = await getDoc(doc(db, "users", user.id));
+      // const uData = uSnap.data();
+      // setChat({
+      //   messagesId: newMessageRef.id,
+      //   lastMessage: "",
+      //   rId: userData.id,
+      //   updatedAt: Date.now(),
+      //   messageSeen: true,
+      //   userData: uData,
+      // });
+
+      setShowSearch(false);
+      setChatVisible(true);
+
+      //Till here
+
       toast.success("Chat added successfully");
     } catch (error) {
       toast.error(error.message || "Failed to add chat");
@@ -134,14 +153,15 @@ function LeftSidebar() {
       await updateDoc(userChatsRef, {
         chatsData: userChatsData.chatsData,
       });
+      setChatVisible(true);
     } catch (error) {
-      toast.error(error.message)
+      toast.error(error.message);
       console.error(error);
     }
   };
 
   return (
-    <div className="ls">
+    <div className={`ls ${chatVisible ? "hidden" : ""}`}>
       <div className="ls-top">
         <div className="ls-nav">
           <img src={assets.logo} className="logo" alt="" />
@@ -150,7 +170,7 @@ function LeftSidebar() {
             <div className="sub-menu">
               <p onClick={() => navigate("/profile")}>Edit Profile</p>
               <hr />
-              <p onClick={()=>logout()}>Logout</p>
+              <p onClick={() => logout()}>Logout</p>
             </div>
           </div>
         </div>

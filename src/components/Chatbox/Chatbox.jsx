@@ -20,6 +20,8 @@ function Chatbox() {
     chatUser,
     messages,
     setMessages,
+    chatVisible,
+    setChatVisible
   } = useContext(AppContext);
 
   const [input, setInput] = useState("");
@@ -150,7 +152,7 @@ function Chatbox() {
   }, [messagesId]);
 
   return chatUser ? (
-    <div className="chatbox">
+    <div className={`chatbox ${chatVisible ? "" : "hidden"}`}>
       <div className="chat-user">
         <img src={chatUser.userData.avatar} alt="" />
         <p>
@@ -160,6 +162,7 @@ function Chatbox() {
           ) : null}
         </p>
         <img src={assets.help_icon} className="help" alt="" />
+        <img onClick={()=>setChatVisible(false)} src={assets.arrow_icon} className="arrow" alt="" />
       </div>
 
       <div className="chat-message">
@@ -222,7 +225,7 @@ function Chatbox() {
       )}
     </div>
   ) : (
-    <div className="chat-welcome">
+    <div className={`chat-welcome ${chatVisible ? "" : "hidden"}`}>
       <img src={assets.logo_icon} alt="" />
       <p>Chat anytime, anywhere</p>
     </div>

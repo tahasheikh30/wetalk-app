@@ -29,3 +29,14 @@
         transform: rotate(360deg);
     }
 }
+
+@media (max-width:900px) {
+    .chat-container{
+        display: flex;
+    }
+
+    .spinner{
+        width: 70px;
+        height: 70px;
+    }
+}
