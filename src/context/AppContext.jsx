@@ -34,7 +34,7 @@ const AppContextProvider = (props) => {
             lastSeen: Date.now(),
           });
         }
-      }, 30000);
+      }, 60000);
       return () => {
         clearInterval(intervalId);
       };
@@ -79,8 +79,7 @@ const AppContextProvider = (props) => {
         unSub();
       };
     }
-  }, [userData]);
-  
+  }, [userData]);  
 
   useEffect(() => {
     if (chatUser && chatUser.userData && chatUser.userData.id) {

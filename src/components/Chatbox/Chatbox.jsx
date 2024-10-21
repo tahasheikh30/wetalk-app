@@ -133,8 +133,16 @@ function Chatbox() {
   useEffect(() => {
     if (messagesId) {
       const unSub = onSnapshot(doc(db, "messages", messagesId), (res) => {
-        setMessages(res.data().messages.reverse());
+        if (res.exists()) {
+          // If the document exists, set the messages
+          setMessages(res.data().messages.reverse());
+        } else {
+          // If the document doesn't exist (e.g., chat was deleted), handle accordingly
+          setMessages([]); // Set messages to an empty array or handle this as needed
+          toast.info("This chat has been deleted.");
+        }
       });
+  
       return () => {
         unSub();
       };
@@ -147,7 +155,7 @@ function Chatbox() {
         <img src={chatUser.userData.avatar} alt="" />
         <p>
           {chatUser.userData.name}{" "}
-          {Date.now() - chatUser.userData.lastSeen <= 50000 ? (
+          {Date.now() - chatUser.userData.lastSeen <= 60000 ? (
             <img className="dot" src={assets.green_dot} alt="" />
           ) : null}
         </p>
