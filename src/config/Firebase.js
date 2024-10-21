@@ -11,13 +11,14 @@ import { toast } from "react-toastify";
 import assets from "../assets/assets";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC6FvltdNfWw4AqQwLynLdRq9mg706dEDo",
-  authDomain: "wetalk-app-gs.firebaseapp.com",
-  projectId: "wetalk-app-gs",
-  storageBucket: "wetalk-app-gs.appspot.com",
-  messagingSenderId: "919037661011",
-  appId: "1:919037661011:web:272814fc665f8c0cdf5ba6",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_FIREBASE_APP_ID,
 };
+
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
