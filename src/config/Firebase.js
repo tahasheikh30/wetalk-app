@@ -33,7 +33,7 @@ const signup = async (name, username, email, password) => {
       name,
       username: username.toLowerCase(),
       email,
-      avatar: assets.avatar_icon,
+      avatar: "/avatar_icon.png",
       bio: "Hello Everyone, I am using WeTalk",
       lastSeen: Date.now(),
     });
