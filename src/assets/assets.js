@@ -1,4 +1,3 @@
-import avatar_icon from './avatar_icon.png'
 import gallery_icon from './gallery_icon.png'
 import help_icon from './help_icon.png'
 import logo_icon from './logo_icon.png'
@@ -17,7 +16,6 @@ import arrow_icon from './arrow_icon.png'
 import green_dot from './green_dot.png'
 
 const assets = {
-    avatar_icon,
     gallery_icon,
     help_icon,
     logo_big,
