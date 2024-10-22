@@ -86,7 +86,7 @@ function ProfileUpdate() {
               hidden
             />
             <img
-              src={image ? URL.createObjectURL(image) : assets.avatar_icon}
+              src={image ? URL.createObjectURL(image) : "/avatar_icon.png"}
               alt=""
             />
             Upload profile image
