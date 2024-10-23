@@ -73,3 +73,36 @@ textarea {
   background-color: #045bb8;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
 }
+
+@media (max-width: 768px) {
+  .profile {
+    min-height: 100vh; /* Ensure it takes full screen height */
+    padding: 20px;
+    overflow-y: auto; /* Allow scrolling if content overflows */
+  }
+
+  .profile-container {
+    flex-direction: column;
+    min-width: auto;
+    width: 100%;
+    margin: 0 20px;
+    height: auto; /* Set to auto for flexible height */
+  }
+
+  .profile-pic {
+    max-width: 150px;
+    margin: 20px auto;
+  }
+
+  .profile form {
+    padding: 20px;
+    width: 100%;
+  }
+
+  .profile input,
+  textarea {
+    min-width: auto;
+    width: 100%;
+  }
+}
+

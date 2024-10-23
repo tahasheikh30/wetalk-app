@@ -143,9 +143,7 @@ function RightSidebar() {
       )}
     </div>
   ) : (
-    <div className="rs">
-      <button onClick={() => logout()}>Logout</button>
-    </div>
+    <div className="rs"></div>
   );
 }
 
