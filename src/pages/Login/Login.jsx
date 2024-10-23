@@ -21,7 +21,7 @@ function Login() {
 
   return (
     <div className="login">
-      <img className="logo" src={assets.logo_big} alt="" />
+      <img className="logo" src={assets.logo} alt="" />
       <form onSubmit={onSubmitHandler} className="login-form">
         <h2>{currentState}</h2>
         {currentState === "Sign up" ? (
