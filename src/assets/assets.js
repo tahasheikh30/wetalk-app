@@ -2,7 +2,6 @@ import gallery_icon from './gallery_icon.png'
 import help_icon from './help_icon.png'
 import logo_icon from './logo_icon.png'
 import logo from './logo.png'
-import profile_img from './profile_richard.png'
 import search_icon from './search_icon.png'
 import send_button from './send_button.png'
 import add_icon from './add_icon.png'
@@ -15,7 +14,6 @@ const assets = {
     help_icon,
     logo_icon,
     logo,
-    profile_img,
     search_icon,
     send_button,
     add_icon,
